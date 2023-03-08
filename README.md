@@ -2,7 +2,7 @@
 
 Team members:
  * `Martin Jurkovič`, `63180015`, `mj5835@student.uni-lj.si`
- * `MEMBER FULL NAME`, `STUDENT ID`, `STUDENT E-MAIL`
+ * `Blaž Pridgar`, `63220482`, `bp59607@student.uni-lj.si`
  * `MEMBER FULL NAME`, `STUDENT ID`, `STUDENT E-MAIL`
  
 Group public acronym/name: `MBJ`

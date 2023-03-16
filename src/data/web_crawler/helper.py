@@ -29,9 +29,9 @@ def load_json(title):
 
 # Writes .txt file retrieved from the website to txt file
 # First 3 lines are there because there are a lot of unecessery new lines and in most cases that should get rid of them
-def write_txt(file_name, data):
+def write_txt(file_name, data, enc):
     data = data.replace("\r\n", "\n")
     data = data.replace("\n\n", "\n")
     data = data.replace("\n\n", "\n")
-    with open(file_name, "w", encoding="utf-8") as f:
+    with open(file_name, "w", encoding=enc) as f:
         f.write(data)

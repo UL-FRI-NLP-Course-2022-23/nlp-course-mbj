@@ -104,12 +104,15 @@ def get_file(resp, successfully, unsuccessfully, directory):
             idx = str(len(successfully))
             path = directory + "\\" + idx
             # If we have .txt file save it else write this down.
-            if got_txt and not(os.path.exists(path)):
+            if not(os.path.exists(path)):
                 os.mkdir(path)
+            if got_txt:
                 path = path + "\\" + idx
                 if got_json:
-                    write_txt(path + ".json", get_response_cookie(json_url, cookie).text.replace(">", ">\n"))
-                write_txt(path + ".txt", get_response_cookie(download_url, cookie).text)
+                    json_response = get_response_cookie(json_url, cookie)
+                    write_txt(path + ".json", json_response.text.replace(">", ">\n"), json_response.encoding)
+                txt_response = get_response_cookie(download_url, cookie)
+                write_txt(path + ".txt", txt_response.text, txt_response.encoding)
                 successfully[idx] = title
             elif not(got_txt):
                 unsuccessfully[title] = "No txt file."
@@ -118,7 +121,7 @@ def get_file(resp, successfully, unsuccessfully, directory):
     else:
         unsuccessfully[resp.url] = "Ni v javni domeni."
 
-retrieve_books('/results/?query=%27rel%3dknjige%40OR%40rel%3dvisoko%C5%A1olska+dela%27&sortDir=ASC&sort=date&flanguage=slv&frights=PDM&pageSize=100&page=', 'seznam_knjig_slovenske_javno_dostopne')
+#retrieve_books('/results/?query=%27rel%3dknjige%40OR%40rel%3dvisoko%C5%A1olska+dela%27&sortDir=ASC&sort=date&flanguage=slv&frights=PDM&pageSize=100&page=', 'seznam_knjig_slovenske_javno_dostopne')
 
 # This runs get_files with n number of threads
 def retrieve_threads(n):

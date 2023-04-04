@@ -1,3 +1,6 @@
+src/data/IMP-corpus/*
+!src/data/IMP-corpus/README.md
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

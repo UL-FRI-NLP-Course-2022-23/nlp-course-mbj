@@ -1,5 +1,7 @@
 data/IMP-corpus/*
 !data/IMP-corpus/README.md
+data/imp25k/*
+!data/imp25k/README.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,17 +1,18 @@
 # %%
-import xml.etree.ElementTree as ET
 import csv
 import os
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 # get working directory and append to file path
 cwd = os.getcwd()
 cwd_project = cwd.split('nlp-course-mbj')[0] + 'nlp-course-mbj'
 input_dir = cwd_project + '/data/IMP-corpus/IMP-corpus-tei/'
-output_dir = cwd_project + '/data/IMP-corpus/IMP-corpus-csv/'
+output_dir = cwd_project + '/data/IMP-corpus/IMP-corpus-csv-word/'
 
 # %%
-for file_name in os.listdir(input_dir):
+num_files = len(os.listdir(input_dir))
+for file_name in tqdm(os.listdir(input_dir), total=num_files, desc="Processing files"):
     # Only process XML files
     if not file_name.endswith('.xml'):
         continue
@@ -20,8 +21,12 @@ for file_name in os.listdir(input_dir):
     with open(os.path.join(input_dir, file_name), 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f, 'xml')
 
+    # create output directory if it doesn't exist
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     # Open the CSV file for writing
-    with open(os.path.join(output_dir, f'{file_name}.csv'), 'w') as csvfile:
+    with open(os.path.join(output_dir, f'{file_name.split(".xml")[0]}.csv'), 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
 
         # Write the header row
@@ -52,3 +57,7 @@ for file_name in os.listdir(input_dir):
                 # If we encounter a non-<choice> tag, we're no longer inside a <choice> tag
                 elif elem.name != 'choice':
                     in_choice = False
+                if elem.name == 'pc':
+                    pc_text = elem.get_text().strip()
+                    writer.writerow([pc_text, pc_text, ''])
+

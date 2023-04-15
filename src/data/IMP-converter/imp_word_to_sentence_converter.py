@@ -6,7 +6,7 @@ from tqdm import tqdm
 # get working directory and append to file path
 cwd = os.getcwd()
 cwd_project = cwd.split('nlp-course-mbj')[0] + 'nlp-course-mbj'
-input_dir = cwd_project + '/data/IMP-corpus/IMP-corpus-csv/'
+input_dir = cwd_project + '/data/IMP-corpus/IMP-corpus-csv-word/'
 output_dir = cwd_project + '/data/IMP-corpus/IMP-corpus-csv-sentence/'
 
 def join_list_to_string_separator(list):

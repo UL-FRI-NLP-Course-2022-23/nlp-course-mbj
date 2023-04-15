@@ -22,9 +22,9 @@ combined_df = pd.concat(dfs, ignore_index=True)
 dataset = Dataset.from_pandas(combined_df)
 
 # Split the dataset into train, validate, and test sets
-train_dataset = dataset.shuffle(len(dataset), seed=42).select(range(int(len(dataset) * 0.7)))
-valid_dataset = dataset.shuffle(len(dataset), seed=42).select(range(int(len(dataset) * 0.7), int(len(dataset) * 0.85)))
-test_dataset = dataset.shuffle(len(dataset), seed=42).select(range(int(len(dataset) * 0.85), len(dataset)))
+train_dataset = dataset.shuffle(seed=42).select(range(int(len(dataset) * 0.7)))
+valid_dataset = dataset.shuffle(seed=42).select(range(int(len(dataset) * 0.7), int(len(dataset) * 0.85)))
+test_dataset = dataset.shuffle(seed=42).select(range(int(len(dataset) * 0.85), len(dataset)))
 
 # Create a DatasetDict object with train, validate, and test sets
 dataset_dict = DatasetDict({

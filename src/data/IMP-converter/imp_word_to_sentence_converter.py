@@ -13,13 +13,21 @@ def join_list_to_string_separator(list):
     # join the list into string, with separators not having space before them
     string = ""
     for i in range(len(list)):
-        if list[i] == "„" or list[i] == "“" or list[i] == "’" or list[i] == "‘" or list[i] == "«" or list[i] == "»":
+        if list[i] in ["„", "“", "’", "‘", "«", "»", "-", "”", "(", ")", "[", "]", "{", "}", "<", ">", "–", "—", "…", "—"]:
             continue
-        elif list[i] == '.' or list[i] == '?' or list[i] == '!' or list[i] == ',' or list[i] == ';' or list[i] == ':':
+        elif list[i] in [".", "?", "!", ",", ";", ":"]:
             string += list[i]
         else:
             string += " " + list[i]
     return string.strip()
+
+def percent_of_matched_words(list1, list2):
+    # get the percent of matched words between two lists
+    matched_words = 0
+    for i in range(len(list1)):
+        if list1[i].lower() == list2[i].lower():
+            matched_words += 1
+    return matched_words / len(list1)
 
 # %%
 num_files = len(os.listdir(input_dir))
@@ -58,6 +66,8 @@ for file_name in tqdm(os.listdir(input_dir), total=num_files, desc="Processing f
                     # join the lists into strings with last and before last element without space and write to csv
                     orig_string = join_list_to_string_separator(orig_list)
                     reg_string = join_list_to_string_separator(reg_list)
+                    if percent_of_matched_words(orig_list, reg_list) == 1:
+                        continue
                     lemma_string = join_list_to_string_separator(lemma_list)
                     writer.writerow([orig_string, reg_string, lemma_string])
                     orig_list = []

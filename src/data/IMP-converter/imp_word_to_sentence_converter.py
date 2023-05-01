@@ -67,6 +67,9 @@ for file_name in tqdm(os.listdir(input_dir), total=num_files, desc="Processing f
                     orig_string = join_list_to_string_separator(orig_list)
                     reg_string = join_list_to_string_separator(reg_list)
                     if percent_of_matched_words(orig_list, reg_list) == 1:
+                        orig_list = []
+                        reg_list = []
+                        lemma_list = []
                         continue
                     lemma_string = join_list_to_string_separator(lemma_list)
                     writer.writerow([orig_string, reg_string, lemma_string])

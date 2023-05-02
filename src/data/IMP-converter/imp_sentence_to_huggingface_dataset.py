@@ -37,3 +37,12 @@ dataset_dict = DatasetDict({
 train_dataset = dataset_dict['train']
 valid_dataset = dataset_dict['validate']
 test_dataset = dataset_dict['test']
+# %%
+# count unique tokens in the dataset
+token_list = set()
+for index, row in combined_df.iterrows():
+    for token in row['orig'].split():
+        token_list.add(token.lower())
+    # token_list.append(row['orig'].split())
+
+# %%

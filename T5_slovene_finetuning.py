@@ -23,9 +23,9 @@ nltk.download('punkt')
 # In[ ]:
 
 
-from huggingface_hub import notebook_login
+from huggingface_hub import notebook_login, login
 
-notebook_login()
+# login(token="")
 
 
 # Then you need to install Git-LFS.
@@ -60,8 +60,8 @@ print(transformers.__version__)
 # In[ ]:
 
 
-# model_checkpoint = "cjvt/t5-sl-small"
-model_checkpoint = "cjvt/t5-sl-large"
+model_checkpoint = "cjvt/t5-sl-small"
+# model_checkpoint = "cjvt/t5-sl-large"
 model_name = model_checkpoint.split("/")[-1]
 repo_name = f"{model_name}-finetuned-old-slovene"
 
@@ -79,7 +79,7 @@ import pandas as pd
 # directory_path = os.getcwd()
 
 # path for files from drive:
-directory_path = "/content/drive/MyDrive/MAG-1/NLP/IMP-corpus-csv-sentence"
+directory_path = "/d/hpc/projects/FRI/mj5835/data/IMP-corpus/IMP-corpus-csv-sentence"
 
 
 # Read all .csv files in the directory into a list of pandas DataFrames
@@ -193,8 +193,8 @@ else:
 # In[ ]:
 
 
-max_input_length = 256
-max_target_length = 256
+max_input_length = 128
+max_target_length = 128
 
 input_param = "reg"
 target_param = "orig"
@@ -261,7 +261,7 @@ args = Seq2SeqTrainingArguments(
     num_train_epochs=2,
     predict_with_generate=True,
     fp16=False,
-    push_to_hub=True,
+    push_to_hub=False,
 )
 
 
@@ -327,8 +327,29 @@ trainer = Seq2SeqTrainer(
 # In[ ]:
 
 
-trainer.train()
+train_result = trainer.train()
 
+# trainer.save_pretrained('/d/hpc/projects/FRI/mj5835/models/')
+trainer.save_model('/d/hpc/projects/FRI/mj5835/models/')
+
+# training_args.logging_dir = 'logs' # or any dir you want to save logs
+
+# training
+train_result = trainer.train() 
+
+# compute train results
+metrics = train_result.metrics
+
+# save train results
+trainer.log_metrics("train", metrics)
+trainer.save_metrics("train", metrics)
+
+# compute evaluation results
+metrics = trainer.evaluate(eval_dataset=tokenized_datasets["test"])
+
+# save evaluation results
+trainer.log_metrics("eval", metrics)
+trainer.save_metrics("eval", metrics)
 
 # ## TESTING THE MODEL
 

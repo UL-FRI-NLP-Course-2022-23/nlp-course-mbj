@@ -62,7 +62,8 @@ for file_name in tqdm(os.listdir(input_dir), total=num_files, desc="Processing f
                 orig_list.append(row[0])
                 reg_list.append(row[1])
                 lemma_list.append(row[2])
-                if row[0] == '.' or row[0] == '?' or row[0] == '!':
+                last_char = row[0][-1]
+                if last_char in [".", "?", "!"]:
                     # join the lists into strings with last and before last element without space and write to csv
                     orig_string = join_list_to_string_separator(orig_list)
                     reg_string = join_list_to_string_separator(reg_list)

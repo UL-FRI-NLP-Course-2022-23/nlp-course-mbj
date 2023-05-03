@@ -1,4 +1,4 @@
-# Natural language processing course 2022/23: `Put name of your project here`
+# Natural language processing course 2022/23: `Paraphrasing historical Slovene with Large Language Models`
 
 Team members:
  * `Martin Jurkovič`, `63180015`, `mj5835@student.uni-lj.si`

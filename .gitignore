@@ -2,7 +2,8 @@ data/IMP-corpus/*
 !data/IMP-corpus/README.md
 data/imp25k/*
 !data/imp25k/README.md
-
+models/*
+!models/README.md
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,38 +1,40 @@
 
 """
-<a href="https://colab.research.google.com/github/UL-FRI-NLP-Course-2022-23/nlp-course-mbj/blob/main/Slo_gpt_2_fine_tunning.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+<a href="https://colab.research.google.com/github/UL-FRI-NLP-Course-2022-23/nlp-course-mbj/blob/main/mT5_finetuning.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 """
+
+# !!! mT5 needs some more libraruies: sentencepiece and accelerate !!!
 
 
 # !pip show torch
 # !pip install --no-cache-dir transformers sentencepiece accelerate
 # ! pip install rouge-score nltk datasets
 
-
 import nltk
 nltk.download('punkt')
 
+# from huggingface_hub import notebook_login
+# notebook_login()
 
 import transformers
-
 print(transformers.__version__)
+
+# model_checkpoint = "cjvt/t5-sl-small"
+model_checkpoint = "google/mt5-base"
+model_name = model_checkpoint.split("/")[-1]
+hf_repo_name = f"{model_name}-finetuned-old-slovene-3"
 
 import os
 from datasets import DatasetDict, Dataset
 import pandas as pd
 
-model_checkpoint = "cjvt/gpt-sl-base"
-model_name = model_checkpoint.split("/")[-1]
-hf_repo_name = f"{model_name}-finetuned-old-slovene-3"
 
 # path for when you use uploaded files:
 # directory_path = os.getcwd()
 
 # path for files from drive:
 # directory_path = "/content/drive/MyDrive/MAG-1/NLP/IMP-corpus-csv-sentence"
-# directory_path = "/d/hpc/projects/FRI/mj5835/data/IMP-corpus/IMP-corpus-csv-sentence"
-directory_path = "/d/hpc/projects/FRI/mj5835/data/IMP-corpus/IMP-corpus-csv-sentence"
-
+directory_path = "data/IMP-corpus/IMP-corpus-csv-sentence"
 
 # Read all .csv files in the directory into a list of pandas DataFrames
 dfs = []
@@ -66,24 +68,22 @@ valid_dataset = dataset_dict['validate']
 test_dataset = dataset_dict['test']
 
 
-dataset_dict
-
 
 from datasets import load_metric
 metric = load_metric("rouge")
 
 
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 
-model = AutoModelForCausalLM.from_pretrained(model_checkpoint)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_checkpoint)
 
 prefix = "translate: "
 
 
-max_input_length = 265
-max_target_length = 265
+max_input_length = 128
+max_target_length = 128
 
 input_param = "reg"
 target_param = "orig"
@@ -160,12 +160,12 @@ trainer = Seq2SeqTrainer(
 )
 
 
-# trainer.train() 
+# trainer.train()
+
 
 train_result = trainer.train()
 
-# trainer.save_pretrained('/d/hpc/projects/FRI/mj5835/models/')
-trainer.save_model('/d/hpc/projects/FRI/mj5835/models/')
+trainer.save_model('/models/')
 
 # training_args.logging_dir = 'logs' # or any dir you want to save logs
 
@@ -185,6 +185,5 @@ metrics = trainer.evaluate(eval_dataset=tokenized_datasets["test"])
 # save evaluation results
 trainer.log_metrics("eval", metrics)
 trainer.save_metrics("eval", metrics)
-
 
 

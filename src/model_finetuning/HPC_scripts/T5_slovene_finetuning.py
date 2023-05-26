@@ -79,7 +79,7 @@ import pandas as pd
 # directory_path = os.getcwd()
 
 # path for files from drive:
-directory_path = "/d/hpc/projects/FRI/mj5835/data/IMP-corpus/IMP-corpus-csv-sentence"
+directory_path = "/data/IMP-corpus/IMP-corpus-csv-sentence"
 
 
 # Read all .csv files in the directory into a list of pandas DataFrames
@@ -330,7 +330,7 @@ trainer = Seq2SeqTrainer(
 train_result = trainer.train()
 
 # trainer.save_pretrained('/d/hpc/projects/FRI/mj5835/models/')
-trainer.save_model('/d/hpc/projects/FRI/mj5835/models/')
+trainer.save_model('models/')
 
 # training_args.logging_dir = 'logs' # or any dir you want to save logs
 
